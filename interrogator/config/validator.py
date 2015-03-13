@@ -1,9 +1,6 @@
 from ..exception import ValidationError
 
 import six
-import pprint
-
-pp = pprint.PrettyPrinter(indent=4)
 
 __all__ = ["validate"]
 
@@ -22,10 +19,6 @@ def _validate_choices(choices, question, config):
                 raise ValidationError(msg)
 
             key = choice.keys()[0]
-
-            pp.pprint(config["questions"])
-            pp.pprint(type(config["questions"]))
-            pp.pprint(key)
 
             if choice[key] in [q["name"] for q in config["questions"]]:
                 msg = "Question{}: choice '{}' has an existing question as a "

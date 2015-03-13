@@ -1,23 +1,26 @@
 questions:
-    - name: name
-      default: Jack Maney
-    - name: color
-      prompt: What is your favorite color?
-      choices:
-          - red
-          - green
-          - black:
-              name: black
-              prompt: Why is that?
-          - blue:
-              name: blue
-              prompt: Neat! me, too! Wanna get coffee?
-              choices: ["yes", "no"]
-              default: "yes"
-    - name: long-winded
-      prompt: |
-            Pardon me, dear sir!
-            Would you be interested in a monthly
-            magazine subscription?
-      choices: ["yes", "no"]
-      default: "yes"
+    -
+        name: name
+        default: Jack Maney
+    -
+        name: color
+        prompt: What is your favorite color?
+        choices:
+            - red
+            - green
+            - black:
+                name: black
+                prompt: Why is that?
+            - blue:
+                name: blue
+                prompt: Neat! me, too! Wanna get coffee?
+                choices: ["yes", "no"]
+                default: "yes"
+    -
+        name: long-winded
+        prompt: |
+                Pardon me, dear sir!
+                Would you be interested in a monthly
+                magazine subscription?
+        choices: ["yes", "no"]
+        default: "yes"

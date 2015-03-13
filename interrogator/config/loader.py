@@ -44,8 +44,6 @@ def load(config_file="interrogator.yaml"):
 
     options = yaml.load(config_text)
 
-    print "options = {}".format(options)
-
     for key, option in options.items():
         options[key] = _get_functions(option)
 
