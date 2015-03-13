@@ -1,4 +1,4 @@
-import commentjson
+import yaml
 import os
 import re
 import six
@@ -30,7 +30,7 @@ def _get_functions(option):
     return option
 
 
-def load(config_file="interrogator.json"):
+def load(config_file="interrogator.yaml"):
     if not os.path.exists(config_file):
         raise ConfigurationError(
             "Config file not found: {}".format(config_file))
@@ -40,11 +40,15 @@ def load(config_file="interrogator.json"):
 
     with open(config_file) as f:
 
-        options = commentjson.load(f)
+        config_text = f.read()
 
-        for key, option in options.items():
-            options[key] = _get_functions(option)
+    options = yaml.load(config_text)
 
-        validate(options)
+    print "options = {}".format(options)
+
+    for key, option in options.items():
+        options[key] = _get_functions(option)
+
+    validate(options)
 
     return options
