@@ -22,8 +22,8 @@ class Question(object):
         if follow_ups is None:
             self.follow_ups = {}
 
-        self.pre_hook = None
-        self.post_hook = None
+        self.pre_hook = pre_hook
+        self.post_hook = post_hook
 
         self.answer = None
 
@@ -52,7 +52,7 @@ class Question(object):
     def ask(self):
 
         if hasattr(self.pre_hook, "__call__"):
-            self.pre_hook(self)
+            self.pre_hook.__call__(self)
 
         answer = get_input(self.prompt)
 

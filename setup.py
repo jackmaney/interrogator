@@ -1,6 +1,6 @@
 import setuptools
 
-from _version import __version__
+from interrogator._version import __version__
 
 try:
     with open("README.rst") as f:
