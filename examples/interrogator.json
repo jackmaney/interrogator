@@ -1,0 +1,25 @@
+{
+    "questions": [{
+        "name": "name",
+        "default": "Jack Maney"
+    }, {
+        "name": "color",
+        "prompt": "What is your favorite color?",
+        "choices": [
+            "red",
+            "green", {
+                "black": {
+                    "name": "black",
+                    "prompt": "Why is that?"
+                }
+            }, {
+                "blue": {
+                    "name": "blue",
+                    "prompt": "Neat! Me, too! Wanna get coffee?",
+                    "choices": ["yes", "no"],
+                    "default": "yes"
+                }
+            }
+        ]
+    }]
+}
