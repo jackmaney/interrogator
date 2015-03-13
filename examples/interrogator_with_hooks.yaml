@@ -1,11 +1,14 @@
+!Context
 questions:
     -
+        !Question
         name: lang
         prompt: What is your favorite programming language? [Python]
         default: Python
-        pre_hook: with_hooks:pre_hook
-        post_hook: with_hooks:post_hook
+        pre_hook: "with_hooks:pre_hook"
+        post_hook: "with_hooks:post_hook"
     -
+        !Question
         name: time
         prompt: OH GOD, WHAT TIME IS IT?!
-        pre_hook: with_hooks:pre_hook
+        pre_hook: "with_hooks:pre_hook"

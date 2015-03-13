@@ -1,22 +1,28 @@
+!Context
 questions:
     -
+        !Question
         name: name
         default: Jack Maney
     -
+        !Question
         name: color
         prompt: What is your favorite color?
         choices:
             - red
             - green
             - black:
+                !Question
                 name: black
                 prompt: Why is that?
             - blue:
+                !Question
                 name: blue
                 prompt: Neat! me, too! Wanna get coffee?
                 choices: ["yes", "no"]
                 default: "yes"
     -
+        !Question
         name: long-winded
         prompt: |
                 Pardon me, dear sir!

@@ -24,8 +24,7 @@ if __name__ == "__main__":
     from interrogator.config import load
     from interrogator.context import Context
 
-    config = load(config_file="interrogator_with_hooks.yaml")
-    context = Context(config)
+    context = load(config_file="interrogator_with_hooks.yaml")
 
     context.ask_questions()
 

@@ -1,31 +1,65 @@
 from ..io import get_input
+from importlib import import_module
+
+import yaml
+import re
+
+_dotted_path_regex = re.compile("^((?:\w+\.)*\w+):((?:\w+\.)*\w+)$")
+
+
+def _function_from_hook_str(hook):
+
+    if hook is None:
+        return hook
+    m = _dotted_path_regex.match(hook)
+    if m:
+        module, fcn_name = m.groups()
+        mod = import_module(module)
+        fcn = getattr(mod, fcn_name, None)
+
+        if fcn is not None and hasattr(fcn, '__call__'):
+            return fcn
+
+    return hook
 
 
 class Question(object):
 
-    def __init__(self, name, context, prompt=None, default=None,
+    yaml_tag = u'!Question'
+
+    def __init__(self, name, context=None, prompt=None, default=None,
                  choices=None, follow_ups=None,
-                 pre_hook=None, post_hook=None, path=None,
-                 is_follow_up=False):
+                 pre_hook=None, post_hook=None, path=None):
+
+        if choices is None:
+            choices = []
+        if follow_ups is None:
+            follow_ups = {}
 
         self.name = name
         self.context = context
         self.default = default
         self.path = path
-        self.is_follow_up = is_follow_up
 
-        self.choices = choices
-        if choices is None:
-            self.choices = []
-
-        self.follow_ups = follow_ups
-        if follow_ups is None:
-            self.follow_ups = {}
-
-        self.pre_hook = pre_hook
-        self.post_hook = post_hook
+        self.pre_hook = _function_from_hook_str(pre_hook)
+        self.post_hook = _function_from_hook_str(post_hook)
 
         self.answer = None
+
+        _choices = []
+        _follow_ups = {}
+
+        for choice in choices:
+            if isinstance(choice, dict):
+                # TODO: Put some validation somewhere...
+                key = choice.keys()[0]
+                _follow_ups[key] = choice[key]
+                _choices.append(key)
+            else:
+                _choices.append(choice)
+
+        self.follow_ups = _follow_ups
+        self.choices = _choices
 
         if prompt:
             self.prompt = prompt
@@ -37,10 +71,6 @@ class Question(object):
 
     def _get_prompt(self):
         prompt = self.name.title()
-
-        if self.choices:
-            prompt += "\n"
-            prompt += "[{}] ".format(",".join(self.choices))
 
         if self.default:
             prompt += "(default: {})".format(self.default)
@@ -79,8 +109,11 @@ class Question(object):
         else:
             self.answer = answer
 
-        if self.answer not in self.follow_ups:
+        if self.context and self.answer not in self.follow_ups:
             self.context.update_answers(self)
 
         if hasattr(self.post_hook, "__call__"):
             self.post_hook(self)
+
+    def __repr__(self):
+        return "<Question '{}'>".format(self.prompt)

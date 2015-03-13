@@ -2,32 +2,33 @@ import yaml
 import os
 import re
 import six
-from importlib import import_module
+
 
 from ..exception import ConfigurationError
-from .validator import validate
+
+from ..question import Question
+from ..context import Context
 
 _dotted_path_regex = re.compile("^((?:\w+\.)*\w+):((?:\w+\.)*\w+)$")
 
+# http://stackoverflow.com/a/7227326/554546
+# TODO: Make this more DRY
 
-def _get_functions(option):
 
-    if isinstance(option, six.string_types):
-        m = _dotted_path_regex.match(option)
-        if m:
-            module, fcn_name = m.groups()
-            mod = import_module(module)
-            fcn = getattr(mod, fcn_name, None)
+def _question_constructor(loader, node):
+    fields = loader.construct_mapping(node, deep=True)
 
-            if fcn is not None and hasattr(fcn, '__call__'):
-                return fcn
+    return Question(**fields)
 
-    if isinstance(option, (list, tuple)):
-        return [_get_functions(x) for x in option]
-    if isinstance(option, dict):
-        return {x: _get_functions(option[x]) for x in option}
+yaml.add_constructor("!Question", _question_constructor)
 
-    return option
+
+def _context_constructor(loader, node):
+    fields = loader.construct_mapping(node, deep=True)
+
+    return Context(**fields)
+
+yaml.add_constructor("!Context", _context_constructor)
 
 
 def load(config_file="interrogator.yaml"):
@@ -42,11 +43,4 @@ def load(config_file="interrogator.yaml"):
 
         config_text = f.read()
 
-    options = yaml.load(config_text)
-
-    for key, option in options.items():
-        options[key] = _get_functions(option)
-
-    validate(options)
-
-    return options
+    return yaml.load(config_text)
