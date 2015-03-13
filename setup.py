@@ -24,5 +24,6 @@ setuptools.setup(
     install_requires=requirements,
     packages=setuptools.find_packages(),
     long_description=long_description,
-    include_package_data=True
+    include_package_data=True,
+    description="Populating and asking a nested series of questions populated by a YAML config file."
 )
