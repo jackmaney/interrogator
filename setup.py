@@ -23,5 +23,6 @@ setuptools.setup(
     version=__version__,
     install_requires=requirements,
     packages=setuptools.find_packages(),
-    long_description=long_description
+    long_description=long_description,
+    include_package_data=True
 )

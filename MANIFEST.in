@@ -1,0 +1,5 @@
+recursive-include examples *.py
+recursive-include examples *.yaml
+include README.rst
+include LICENSE
+include requirements.txt
