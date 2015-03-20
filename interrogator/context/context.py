@@ -1,6 +1,23 @@
 from ..question import Question
+from StringIO import StringIO
 
 import dpath
+import yaml
+import os
+
+__all__ = ["Context"]
+
+
+def _class_loader(cls):
+
+    def result(loader, node):
+        fields = loader.construct_mapping(node, deep=True)
+
+        return cls(**fields)
+
+    return result
+
+yaml.add_constructor("!Question", _class_loader(Question))
 
 
 class Context(object):
@@ -15,6 +32,18 @@ class Context(object):
             self._clean_up_question(question)
 
         self.answers = {}
+
+    @classmethod
+    def from_yaml_string(cls, yaml_string):
+        fields = yaml.loads(StringIO(yaml_string))
+        return cls(**fields)
+
+    @classmethod
+    def from_yaml_file(cls, yaml_file="interrogator.yaml"):
+        with open(yaml_file) as f:
+            fields = yaml.load(f)
+
+        return cls(**fields)
 
     def _clean_up_question(self, question, base_path=None):
 
