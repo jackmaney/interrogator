@@ -25,6 +25,10 @@ def _function_from_hook_str(hook):
 
 class Question(object):
 
+    """
+    A ``Question`` object encapsulates all of the data inherent to a single question, including any user-supplied answer (if any) and follow-up questions (if any). The attributes of this class are loaded from the configuration file. See the configAnchor_ section for more information.
+    """
+
     yaml_tag = u'!Question'
 
     def __init__(self, name, context=None, prompt=None, default=None,

@@ -1,9 +1,8 @@
 """
-.. _Configuration
-Configuration
-=============
+The Configuration File
+======================
 
-The questions are generated from a YAML config file and parsed by :py:mod:`PyYAML`. At the top-most level, the config file needs to correspond to key-value pairs, with the ``questions`` consuming most of the configuration. Two custom tags allow `PyYAML constructors <http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers>`_ to automagically build a :py:mod:`Context` and :py:mod:`Question`s out of the existing YAML configuration file.
+The questions are generated from a YAML config file and parsed by :mod:`PyYAML`. At the top-most level, the config file needs to correspond to key-value pairs, with the ``questions`` consuming most of the configuration. Two custom tags allow `PyYAML constructors <http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers>`_ to automagically build a ``Context`` and :py:mod:`Question`\ s out of the existing YAML configuration file.
 
 Custom Tags:
 ------------

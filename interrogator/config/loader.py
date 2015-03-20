@@ -36,12 +36,12 @@ def load(config_file="interrogator.yaml"):
     Grabs the specified YAML configuration file, loads it (after
     adding specified constructors).
 
-    See the Configuration_ section for more information.
+    See the _ section for more information.
 
     :param str config_file: The name (and, if necessary, path) of the configuration file to be loaded
 
     :return: A :py:class:`Context` object that is loaded from the configuration file due to PyYAML magic.
-    :raises ConfigurationError: if the config file is not found or is not a file. 
+    :raises ConfigurationError: if the config file is not found or is not a file.
     """
     if not os.path.exists(config_file):
         raise ConfigurationError(

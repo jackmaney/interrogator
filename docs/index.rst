@@ -1,17 +1,18 @@
-.. . documentation master file, created by
-   sphinx-quickstart on Fri Mar 13 03:13:04 2015.
+.. Interrogator documentation master file, created by
+   sphinx-quickstart on Fri Mar 20 14:11:59 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Interrogator
-=============================
+Welcome to Interrogator's documentation!
+========================================
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
-   interrogator
+   config
+
 
 
 Indices and tables
