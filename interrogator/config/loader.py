@@ -12,23 +12,18 @@ from ..context import Context
 _dotted_path_regex = re.compile("^((?:\w+\.)*\w+):((?:\w+\.)*\w+)$")
 
 # http://stackoverflow.com/a/7227326/554546
-# TODO: Make this more DRY
 
+def _class_loader(cls):
 
-def _question_constructor(loader, node):
-    fields = loader.construct_mapping(node, deep=True)
+    def result(loader, node):
+        fields = loader.construct_mapping(node, deep=True)
 
-    return Question(**fields)
+        return cls(**fields)
 
-yaml.add_constructor("!Question", _question_constructor)
+    return result
 
-
-def _context_constructor(loader, node):
-    fields = loader.construct_mapping(node, deep=True)
-
-    return Context(**fields)
-
-yaml.add_constructor("!Context", _context_constructor)
+yaml.add_constructor("!Question", _class_loader(Question))
+yaml.add_constructor("!Context", _class_loader(Context))
 
 
 def load(config_file="interrogator.yaml"):
