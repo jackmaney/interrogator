@@ -21,7 +21,6 @@ if __name__ == "__main__":
     import sys
     sys.path = ['..'] + sys.path
 
-    from interrogator.config import load
     from interrogator.context import Context
 
     context = Context.from_yaml_file("interrogator_with_hooks.yaml")

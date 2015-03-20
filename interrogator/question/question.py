@@ -26,7 +26,7 @@ def _function_from_hook_str(hook):
 class Question(object):
 
     """
-    A ``Question`` object encapsulates all of the data inherent to a single question, including any user-supplied answer (if any) and follow-up questions (if any). The attributes of this class are loaded from the configuration file. See the configAnchor_ section for more information.
+    A ``Question`` object encapsulates all of the data inherent to a single question, including any user-supplied answer (if any) and follow-up questions (if any). The attributes of this class are loaded from the configuration file. See the Configuration section for more information.
     """
 
     yaml_tag = u'!Question'
@@ -84,6 +84,21 @@ class Question(object):
         return prompt
 
     def ask(self):
+        """
+        When this method is called, the following happens:
+
+        * The ``pre_hook``, if specified, is called.
+
+        * The prompt (configurable via the ``prompt`` attribute) is presented to the user.
+
+        * Input from the user is stored in the ``answer`` attribute (and if the user presses enter, then the ``answer`` is set to the ``default`` attribute). Note that if the ``choices`` attribute is specified, then only the given choices are accepted as a possible answer.
+
+        * If there is a relevant follow-up question, then the follow-up is asked.
+
+        * If this question has no follow-ups and is set with a :class:`Context`, then the :class:`Context`\ 's ``answers`` attribute is updated with the answer to this question.
+
+        * The ``post_hook``, if specified, is called.
+        """
 
         if hasattr(self.pre_hook, "__call__"):
             self.pre_hook.__call__(self)

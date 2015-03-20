@@ -1,4 +1,0 @@
-Configuration
-=============
-
-.. automodule:: interrogator.config

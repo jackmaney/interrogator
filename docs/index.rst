@@ -9,9 +9,10 @@ Welcome to Interrogator's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   config
+   context
+   question
 
 
 

@@ -1,66 +1,3 @@
-"""
-Context
-=======
-
-The ``Context`` object consists of a list of questions, a method to ask the set of questions, and the recorded answers from all questions and applicable follow-up questions.
-
-``Context`` objects are loaded from a configuration file.
-
-The Configuration File
-----------------------
-
-The questions are generated from a YAML config file and parsed by :mod:`PyYAML`. At the top-most level, the config file needs to correspond to key-value pairs, with the ``questions`` consuming most of the configuration. The ``!Question`` tag allows `a PyYAML constructor <http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers>`_ to automagically build :py:mod:`Question`\ s out of the existing YAML configuration file.
-
-
-YAML Map Keys For Questions:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- ``name``: The only required attribute. This is used as a unique identifier for the given question, so you should make it something meaningful and brief for what you want to ask.
-
-- ``prompt``: Use this attribute to customize the text that the user sees when the question is asked.
-
-- ``default``: The chosen answer if no input is entered (ie the user hits the enter key upon the ``prompt``).
-
-- ``choices``: A list that limits the possible answers a user can give (essentially an ``enum``). This is a list of things, each of which is one of the following types:
-
-  - A string (which, if chosen, is just passed along as an answer), or
-
-  - A key whose value is another question. This denotes a follow-up question. For example, the following question has two follow-ups, one asking teenagers to get off one's lawn, and the other asking about retirement readiness.
-
-Example
-~~~~~~~
-
-    ::
-
-
-            !Context
-            questions:
-                -
-                    !Question
-                    name: age_bucket
-                    prompt: Which of the following describes your age?
-                    choices:
-                        - "13-19":
-                            !Question
-                            name: yawn
-                            prompt: Would you please get off my lawn?!
-                            choices: ["yes", "no"]
-                            default: no
-                        - "20-25"
-                        - "26-55"
-                        - "56+":
-                            !Question
-                            name: aarp
-                            prompt: >
-                                    In an sentence, what does
-                                    financial security look like to you?
-
-
-
-
-"""
-
-
 from ..question import Question
 from StringIO import StringIO
 
@@ -85,6 +22,8 @@ yaml.add_constructor("!Question", _class_loader(Question))
 
 class Context(object):
 
+    """As this object is loaded from the configuration file, you should only really need to worry about one constructor: ``from_yaml_file``."""
+
     def __init__(self, questions=None):
         self.questions = questions
 
@@ -97,15 +36,22 @@ class Context(object):
         self.answers = {}
 
     @classmethod
-    def from_yaml_string(cls, yaml_string):
-        fields = yaml.loads(StringIO(yaml_string))
-        return cls(**fields)
-
-    @classmethod
     def from_yaml_file(cls, yaml_file="interrogator.yaml"):
+        """
+        Creates a ``Context`` class out of a YAML configuration file.
+
+        :param str yaml_file: The file (with path, if necessary) to a YAML configuration file to be loaded.
+
+        :returns: The corresponding ``Context``.
+        """
         with open(yaml_file) as f:
             fields = yaml.load(f)
 
+        return cls(**fields)
+
+    @classmethod
+    def from_yaml_string(cls, yaml_string):
+        fields = yaml.loads(StringIO(yaml_string))
         return cls(**fields)
 
     def _clean_up_question(self, question, base_path=None):
@@ -124,6 +70,11 @@ class Context(object):
                 self._clean_up_question(follow_up, base_path=path)
 
     def ask_questions(self):
+        """
+        Ask each question in order. The questions are specified by the ``!Question`` tag in the config file, and the questions are asked in the order specified in said file.
+
+        As each question is being asked, its answer is updated and stored in the ``answers`` attribute of the ``Context``.
+        """
 
         for q in self.questions:
             q.ask()
