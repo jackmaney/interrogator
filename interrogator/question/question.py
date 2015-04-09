@@ -55,8 +55,15 @@ class Question(object):
 
         for choice in choices:
             if isinstance(choice, dict):
-                # TODO: Put some validation somewhere...
-                key = choice.keys()[0]
+
+                keys = [k for k in choice.keys()]
+
+                if len(keys) != 1:
+                    raise ValueError("For choice '{}', follow-up questions can only be from one key. Found the following keys: [{}]".format(
+                        choice, ",".join([str(k) for k in keys])
+                    ))
+
+                key = keys[0]
                 _follow_ups[key] = choice[key]
                 _choices.append(key)
             else:
